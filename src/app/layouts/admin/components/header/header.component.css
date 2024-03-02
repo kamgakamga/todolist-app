@@ -1,0 +1,13 @@
+.title-icons-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .app-header {
+        background-color: #fff
+      }
+      .decoration {
+        text-decoration: none;
+      }
+      

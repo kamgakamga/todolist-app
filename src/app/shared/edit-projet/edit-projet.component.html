@@ -1,0 +1,65 @@
+<form>
+        <div class="row">
+          <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="nomProjet"> Nom Projet <span>*</span></label>
+                      <input type="text"  placeholder="nom du projet" class="form-control" id="nomProjet" aria-describedby="nomprojet" formControlName="nomProjet">
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description</label>
+                      <input type="text"  placeholder="description du projet" class="form-control" id="description" aria-describedby="description" formControlName="description">
+                    </div>
+                    <div class="form-group">
+                      <label for="debut">Debut</label>
+                      <input type="date" class="form-control" id="debut" aria-describedby="debut" formControlName="dateDebut" >
+                    </div>
+                    <div class="form-group">
+                      <label for="fin">Fin</label>
+                      <input type="date" class="form-control" id="fin" aria-describedby="fin" formControlName="dateFin">
+                    </div>
+      
+                   <!-- Selection du responsable de la tache-->
+                    <div class="form-group">
+                      <select name="responsable"  formControlName="responsableId">
+                        <option>----Responsable Tache----</option>
+                        <option [value]="utilisateur.id" *ngFor="let utilisateur of utilisateurs" >
+                          {{utilisateur.prenom}} {{ utilisateur.nom }}
+                        </option>
+                      </select>
+                    </div>
+      
+      
+                  <!-- Selection de l'état de la tache-->
+                  <div class="form-group">
+                    <select name="responsable"  formControlName="etatId">
+                      <option>----Etat de la tache----</option>
+                      <option [value]="etatTache.id" *ngFor="let etatTache of etatTaches" >
+                        {{ etatTache.libelle }}
+                      </option>
+                    </select>
+                  </div>
+      
+      
+            <!-- Selection de la liste des responsables-->
+            <div class="form-group">
+                      <label for="utilisateurs">Utilisateurs</label>
+                      <input type="text" class="form-control" id="utilisateurs" aria-describedby="utilisateurs" formControlName="utilisateurs">
+                    </div>
+                <div class="action-buttons">
+                  <button type="submit" class="btn btn-primary" title="enregister le projet" (click)="onCreateProject()" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Enregistrer</button>
+                </div>
+        </div>
+            <div class="col-sm-6">
+              <h3> Previsualiser votre projet  </h3>
+              <div class="face-snap-card" *ngIf="projetPreview$ | async as projet">
+                <h5>nomProjet: {{ projet.nomProjet }}</h5>
+                <h5>description: {{ projet.description }}</h5>
+                <h5>dateDebut: {{projet.dateDebut}}</h5>
+                <h5>dateFin: {{projet.dateFin}}</h5>
+              </div>
+            </div>
+          </div>
+      </form>
+      
+      
+      

@@ -1,0 +1,11 @@
+@import '~primeng/resources/primeng.min.css';
+@import '~primeng/resources/themes/saga-blue/theme.css';
+
+.btn-round {
+        border-radius: 50%; /* Utiliser une valeur supérieure à la moitié de la hauteur pour obtenir un bouton rond */
+      }
+
+.custom-modal-container {
+        width: 50px; /* Largeur de la modal */
+        height: 25px; /* Hauteur de la modal */
+      }

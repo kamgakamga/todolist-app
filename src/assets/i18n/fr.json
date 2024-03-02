@@ -1,0 +1,14 @@
+{
+"GESTION_PROJET" : "Manage Projet",
+"NOM_PROJET" : "Nom projet",
+"DESCRIPTION" : "Description",
+"COPYRIGHT" : "tous les droits sont reservés",
+"FICHIER" : "Fichier",
+"PROJET" : "Projet",
+"Delete" : "Suppression en cours",
+"RESPONSABLE": "Responsable",
+"DATE_DEBUT": "Date début",
+"DATE_FIN": "Date fin",
+"ACTIONS": "Actions",
+"TABLEAU_DE_BORD": "Tableau de bord"
+}

@@ -1,0 +1,133 @@
+<p-toast></p-toast>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProjets()" [disabled]="!selectedProjets || !selectedProjets.length"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt  [rows]="5" 
+                  [paginator]="true"
+                  class="p-table"
+                  [scrollable]="true" 
+                  [columns]="columns"
+                  [value]="projetsList"
+                  selectionMode="single"
+                  styleClass="p-datatable-responsive-demo p-datatable-gridlines" 
+                  responsiveLayout="scroll"
+                  [(selection)]="selectedProject"
+                  [rowHover]="true" dataKey="id"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-between">
+                <h5 class="m-0">{{'GESTION_PROJET' | translate}}</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onSearchProject($event)" placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns class="bg-th">
+            <tr>
+                <th style="width: 1rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th> 
+                <th *ngFor="let col of columns"
+                    [pSortableColumn]="col.header"
+                    [pSortableColumn]="col.field"
+                    (click)="getSortColumn(col.field)">
+                    {{col.header| translate }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th>{{'ACTIONS' | translate}}</th> 
+            </tr> 
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="" (click)="getObject(rowData)"
+                [ngClass]="{'p-highlight': selectedData?.id == rowData.id}">
+                <td>
+                    <p-tableCheckbox [value]="project"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let column of columns">
+                    <span *ngIf="column.type == typeString"> {{rowData[column.field]}}</span>
+                    <span *ngIf="column.type == typeDate"> {{rowData[column.field] | date: formatDate}}</span>
+                    <span *ngIf="column.type == typeDateTime"> {{rowData[column.field] | date: formatDateTime}}</span>
+                    <span *ngIf="column.type == typeNumber"> {{rowData[column.field] | number }}</span>
+                    <span *ngIf="column.type == typeObject"> {{rowData[column.field].prenom}} {{rowData[column.field].nom}}</span>
+                </td>
+                <td class="d-flex">
+                    <span class="btn-round btn btn-success mr-2" (click)="editProject(rowData)"><i class="pi pi-pencil"></i></span>
+                    <span class="btn-round btn btn-danger" (click)="deleteProject(rowData)"><i class="pi pi-trash"></i></span>
+                </td>
+            </tr>
+        </ng-template> 
+
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{projetsList ? projetsList.length : 0 }} Projet{{projetsList && projetsList.length > 1 ? "s." : "." }}<!-- <span *ngIf="projets && projets.length > 1">s</span>. -->
+            </div>
+        </ng-template>
+
+    </p-table>
+
+<p-dialog [(visible)]="projectDialog" [style]="{width: '500px'}" header="Project Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <form [formGroup]="form">
+            <div class="field row mb-2">
+                <label for="projectName" class="col-md-3">Intitule</label>
+                <input name="projectName" type="text" pInputText class="col-md-9 form-control" id="projectName" required autofocus formControlName="projectName"/>
+                <small class="p-error" *ngIf="submitted && !project">Name is required.</small>
+            </div>
+            <div class="field row mb-2">
+                <label for="projectDescription" class="col-md-3">Description</label>
+                <textarea id="projectDescription" name="projectDescription"  class="col-md-9 form-control" pInputTextarea required formControlName="projectDescription" rows="2" cols="20"></textarea>
+            </div>
+            <div class="field row mb-2">
+                <label for="responsable" class="col-md-3">Responsable</label>
+                <div class="col-md-5">
+                <p-autoComplete
+                          [suggestions]="responsableProjet"
+                          (completeMethod)="filterData($event)"
+                          field="id" [dropdown]="true"
+                          formControlName="projectResponsable"
+                >
+                    <ng-template let-object pTemplate="item">
+                      <div >
+                        <div>{{object.prenom}} {{object.nom}}</div>
+                      </div>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+        </div>
+            <div class="field row mb-2">
+                <label for="startDate" class="col-md-3">Date debut</label>
+                <input type="date" pInputText id="startDate" class="col-md-9 form-control" formControlName="projectDateDebut"/>
+                <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateDebut'].errors" class="invalid-feedback">
+                    La date de début doit être antérieure à la date de fin.
+                </small>
+            </div>
+            <div class="field row mb-2">
+                <label for="endDate" class="col-md-3"> Date fin</label>
+                <input type="date" pInputText id="endDate" class="col-md-9 form-control" formControlName="projectDateFin"/>
+                <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateFin'].errors" class="invalid-feedback">
+                    La date de fin doit être postérieure à la date de début.
+                </small>                 
+            </div>
+     </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onSave()"></button>
+    </ng-template>
+</p-dialog>
+
+ <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
