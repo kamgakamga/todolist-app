@@ -1,13 +1,13 @@
 <p-toast></p-toast>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="{{'NOUVEAU' | translate}}" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
             <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProjets()" [disabled]="!selectedProjets || !selectedProjets.length"></button>
         </ng-template>
 
         <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="{{'IMPORT'|translate}}" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="{{'EXPORT'|translate}}" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
 
@@ -27,7 +27,7 @@
 
         <ng-template pTemplate="caption">
             <div class="d-flex justify-content-between">
-                <h5 class="m-0">{{'GESTION_PROJET' | translate}}</h5>
+                <h5 class="m-0">{{'GESTION_PROJETS' | translate}}</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" (input)="onSearchProject($event)" placeholder="Search..." />
@@ -54,7 +54,7 @@
             <tr class="" (click)="getObject(rowData)"
                 [ngClass]="{'p-highlight': selectedData?.id == rowData.id}">
                 <td>
-                    <p-tableCheckbox [value]="project"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
                 <td *ngFor="let column of columns">
                     <span *ngIf="column.type == typeString"> {{rowData[column.field]}}</span>

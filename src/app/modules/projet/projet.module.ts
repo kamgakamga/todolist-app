@@ -15,11 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { createTranslateLoader } from 'src/app/app.module';
 
-export function createTranslateLoader(httpClient:HttpClient) {
-  return new TranslateHttpLoader(httpClient,'./assets/i18n/','.json');
-}
 @NgModule({
   declarations: [ProjetComponent],
   exports: [

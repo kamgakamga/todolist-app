@@ -1,14 +1,25 @@
 {
-"GESTION_PROJET" : "Manage Projet",
+"GESTION_PROJETS" : "Gestion Projet",
+"NOUVEAU" : "Nouveau",
+"IMPORT" : "Import",
+"EXPORT" : "Export",
 "NOM_PROJET" : "Nom projet",
 "DESCRIPTION" : "Description",
 "COPYRIGHT" : "tous les droits sont reservés",
 "FICHIER" : "Fichier",
-"PROJET" : "Projet",
+"PROJETS" : "Projet",
 "Delete" : "Suppression en cours",
 "RESPONSABLE": "Responsable",
 "DATE_DEBUT": "Date début",
 "DATE_FIN": "Date fin",
 "ACTIONS": "Actions",
-"TABLEAU_DE_BORD": "Tableau de bord"
+"TABLEAU_DE_BORD": "Tableau de bord",
+"PARAMETRAGES":"Paramétrages",
+"SPRINT" :"Sprint",
+"TACHES" :"Taches",
+"UTILISATEURS": "Utilisateurs",
+"ADVANCE_IT": "Advance-It Group,",
+"GESTION_SPRINTS": "Gestion sprint",
+"GESTION_TACHES": "Gestion taches",
+"GESTION_UTILISATEURS": "Gestion utilisateur"
 }
