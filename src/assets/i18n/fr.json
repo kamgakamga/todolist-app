@@ -10,7 +10,7 @@
 "PROJETS" : "Projet",
 "Delete" : "Suppression en cours",
 "RESPONSABLE": "Responsable",
-"ERROR_NOM_REQUIS": "Name is required.",
+"ERROR_REQUIS": "Champs réquis",
 "DATE_DEBUT": "Date début",
 "DATE_FIN": "Date fin",
 "ACTIONS": "Actions",
@@ -29,5 +29,14 @@
 "TOTAL_PROJET": "Nombre total de projet",
 "RECHERCHER": "Recherche",
 "ENREGISTRER": "Enregistrer",
-"ANNULER": "Annuler"
+"ANNULER": "Annuler",
+"SUPPRIMER": "Supprimer",
+"CONFIRMATION": "Confirmation",
+"AVERTISSEMENT": "Avertissement",
+"ERROR": "Erreur",
+"UNE_ERREUR_EST_SURVENU": "Une erreur s'est produite lors de la suppression du projet.",
+"CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer le projet",
+"ERROR_4_CARACTERES": "ce champs doit avoir au moins 4 caractères",
+"ERROR_30_CARACTERES": "ce champs doit avoir au plus 30 caractères",
+"ERROR_150_CARACTERES": "ce champs doit avoir au plus 150 caractères"
 }

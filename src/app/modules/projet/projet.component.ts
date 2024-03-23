@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';;
 import { ProjetService } from 'src/app/services/projet.service';
-import { Columns,ID_ETAT_IMPRIMABLE, IS_EXPORT } from './const';
+import { Columns, ID_ETAT_IMPRIMABLE, IS_EXPORT, SORT_COLOMN, ASC, EMPTY_STRING } from './const';
+import { formaterDate } from "../../helpers/global.helpers";
 import { AppConstants } from 'src/app/app-constante';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -9,8 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenericsService } from 'src/app/services/generics.service';
 import { ProjetRequestDto } from 'src/app/models/dtos/requests/projet';
 import Swal from 'sweetalert2';
-import { type } from 'os';
-import { ParamEtat, EtatImprimableModel } from 'src/app/models/dtos/requests/etat.model';
+import {EtatImprimableModel } from 'src/app/models/dtos/requests/etat.model';
 
 @Component({
   selector: 'app-projet',
@@ -18,6 +18,12 @@ import { ParamEtat, EtatImprimableModel } from 'src/app/models/dtos/requests/eta
   styleUrls: ['./projet.component.scss']
 })
 export class ProjetComponent implements OnInit {
+deleteSelectedProjets() {
+throw new Error('Method not implemented.');
+}
+getSortColumn(arg0: any) {
+throw new Error('Method not implemented.');
+}
 
   public form!: FormGroup;
   selectedData: any;
@@ -44,53 +50,34 @@ export class ProjetComponent implements OnInit {
   page = 0;
   ref: any;
 
-  constructor(private projetService: ProjetService,
-              //private modalService: NgModal,
+  constructor(
+              private projetService: ProjetService,
               public translateService: TranslateService,
               private messageService: MessageService,
               private confirmationService: ConfirmationService,
               private genericsService : GenericsService,
-              private _fb: FormBuilder) { }
+              private _fb: FormBuilder
+    ) { }
 
   ngOnInit(): void {
-    this.getListProjets('id','ASC','');
-    console.log('getAllUtilisateurs', this.responsableProjet);
-    
+    this._getListProjets(SORT_COLOMN, ASC,EMPTY_STRING);
     if(this.project){
       this._initForm(this.project)
     }else {
       this._initForm('');
-            // Analyser la chaîne de date en objet Date
-            const dateFromServer: Date = new Date();
-            // Formater la date au format YYYY-MM-DD
-            const formattedDate = this.formatsDate(dateFromServer);
       this.form.patchValue({
-        dateDebut: formattedDate // Préchargez la dateDebut dans le formulaire
+        dateDebut: formaterDate(new Date()) // Préchargez la dateDebut dans le formulaire
       });
     }
-  
   }
 
-  deleteSelectedProjets() {
-    throw new Error('Method not implemented.');
-    }
-
-  private formatsDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    return `${day}/${month}/${year}`;
-  }
-
-  private getListProjets(orderBy: any, sort: any, keyword: any) {
+  private _getListProjets(orderBy: any, sort: any, keyword: any) {
   this.genericsService.getPromiseResource(
     `${AppConstants.URL_PROJETS}?size=${this.pageSize}&page=${this.page}&keyword=${keyword}&sort=${sort}&orderBy=${orderBy}`)
     .then((res: any) => {
-      console.log(res);
       this.projetsList = res.data.content;
       this.totalElements = res.data.totalElements;
       this.totalPages = res.data.totalPages;
-      //this.loading = false;
     });
 }
 
@@ -108,10 +95,8 @@ export class ProjetComponent implements OnInit {
   private getProjectDetail(id: number) {
   this.genericsService.getPromiseResource(`${AppConstants.URL_PROJETS+'/'+id}`)
     .then((res: any) => {
-      console.log('res',res);
       this.project = res.data;
       this._initForm(this.project);
-      console.log('this.project ',this.project );
       //this.loading = false;
     });
 }
@@ -128,6 +113,9 @@ this._getAllUtilisateurs(event.query)
     this._getAllUtilisateurs('');
   }
 
+  onSelectResponsable(event: any) {
+    this.projetOnner = event;
+}
 
   hideDialog() {
     this.projectDialog = false;
@@ -136,21 +124,21 @@ this._getAllUtilisateurs(event.query)
 
   deleteProject(project: any) {
     Swal.fire({
-      title: 'Confirmation',
-      text: `Êtes-vous sûr de vouloir supprimer le projet ${project.nomProjet} ?`,
+      title: 'CONFIRMATION',
+      text: `'CONFIRM_DELETE' ${project.nomProjet} ?`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Supprimer',
-      cancelButtonText: 'Annuler'
+      confirmButtonText: 'SUPPRIMER',
+      cancelButtonText: 'ANNULER'
     }).then((result) => {
       if (result.isConfirmed) {
         this.genericsService.deletePromiseResource(`${AppConstants.URL_PROJETS}/${project.id}`)
           .then((res: any) => {
             if (res.success === true) {
               this.genericsService.confirmResponseAPI(res.data, 'success', +`${AppConstants.DEFAULT_DURATION_MODAL}`,'top-end');
-              this.getListProjets('id', 'ASC', '');   
+              this._getListProjets(SORT_COLOMN, ASC, EMPTY_STRING);   
              } else {
-               Swal.fire('Erreur', 'Une erreur s\'est produite lors de la suppression du projet.', 'error');
+               Swal.fire('ERROR', 'UNE_ERREUR_EST_SURVENU', 'error');
              }
           })
           .catch((error) => {
@@ -160,52 +148,41 @@ this._getAllUtilisateurs(event.query)
     });
   }
     
-  
-
-  editProject(project: any) {
+  public editProject(project: any) {
    this.openNew();
-    this.getProjectDetail(+project.id);
-  }
- 
-  getSortColumn(arg0: any) {
-  throw new Error('Method not implemented.');
+   this.getProjectDetail(+project.id);
   }
 
-  getObject(projet: any) {
+  public getObject(projet: any) {
     this.project = {...projet};
   }
 
   private _initForm(data :any) {
-
-    const currentDate = new Date().toISOString().substr(0,10);
-    const valueDateDebut = (data && data.dateDebut) ? new Date(data.dateDebut).toISOString().substr(0,10):'';
-    const valueDateFin = (data && data.dateFin) ? new Date(data.dateFin).toISOString().substr(0,10):'';
-
+    const valueDateDebut = (data && data.dateDebut) ? formaterDate(new Date(data.dateDebut)) : null;
+    const valueDateFin = (data && data.dateFin) ? formaterDate(new Date(data.dateFin)) : null;
     this.form = this._fb.group({
-      projectName: [(data && data.nomProjet) ? data.nomProjet : '', [Validators.required,Validators.maxLength(30), Validators.required]],
-      projectDescription: [(data && data.description) ? data.description : '', [Validators.maxLength(150)]],
-      projectResponsable: [(data && data.responsable) ? data.responsable.id : '',[Validators.maxLength(60)]],
-      projectDateDebut: [(data && data.dateDebut) ? valueDateDebut : currentDate],
-      projectDateFin: [(data && data.dateFin ) ? valueDateFin : currentDate],
-    }, { validator: this.dateValidation });
+      projectName: [(data && data.nomProjet) ? data.nomProjet : null, [Validators.required,Validators.minLength(4), Validators.maxLength(30)]],
+      projectDescription: [(data && data.description) ? data.description : null, [Validators.maxLength(150)]],
+      projectResponsable: [(data && data.responsable) ? data.responsable.id : null],
+      projectDateDebut: [(data && data.dateDebut) ? valueDateDebut : null],
+      projectDateFin: [(data && data.dateFin ) ? valueDateFin : null],
+    }, { validator: this._dateValidation });
   }
-  get f() {
+
+  public get f() {
     return this.form.controls
   }
 
-  loadProject($event: LazyLoadEvent) {
-    console.log('event',$event);
-    this.getListProjets('','','');
+  public loadProject($event: LazyLoadEvent) {
+    this._getListProjets(EMPTY_STRING,EMPTY_STRING,EMPTY_STRING);
     }
 
-    onSearchProject(event: Event) {
+  public  onSearchProject(event: Event) {
       const value = (event.target as HTMLInputElement).value;
-      console.log('Keyword:', value);
-         console.log('Keyword:', value);
-         this.getListProjets('id', 'ASC', value);
+         this._getListProjets(SORT_COLOMN, ASC, value);
   }
    
-    dateValidation(formGroup: FormGroup) {
+  private  _dateValidation(formGroup: FormGroup) {
       const dateDebut = formGroup.get('projectDateDebut')?.value;
       const dateFin = formGroup.get('projectDateFin')?.value;
       if (dateDebut !== null && dateFin !== null) {
@@ -218,8 +195,8 @@ this._getAllUtilisateurs(event.query)
   }
 
   public onSave(): void {
+    console.log('f',this.f);
     this.submitted = true;
-    console.log('this.form',this.form)
     if (!this.form.valid){
       console.log('formulaire invalid');
       return;
@@ -232,14 +209,12 @@ this._getAllUtilisateurs(event.query)
       this.f['projectDateDebut'] && this.f['projectDateDebut'].value ? this.f['projectDateDebut'].value : null,
       this.f['projectDateFin'] && this.f['projectDateFin'].value ? this.f['projectDateFin'].value : null,
       [],
-      this.f['projectResponsable'] && this.f['projectResponsable'].value ? +this.f['projectResponsable'].value : 0,
+      this.f['projectResponsable'] && this.f['projectResponsable'].value ? +this.f['projectResponsable'].value.id : 0,
       []
     )
-    console.log(dto);
     this.genericsService.postPromiseResource(`${AppConstants.URL_PROJETS}`, dto)
       .then((res: any) => {
-      console.log(res)
-      this.getListProjets('','','');
+      this._getListProjets(EMPTY_STRING,EMPTY_STRING,EMPTY_STRING);
       this.projectDialog = false;
         this.genericsService.confirmResponseAPI(res.message, 'success', +`${AppConstants.DEFAULT_DURATION_MODAL}`,'top-end');
         this.project = {};
@@ -247,12 +222,11 @@ this._getAllUtilisateurs(event.query)
     }).catch((err) => {
       console.log(err);
     })
-  
+    this.project ={};
   }
     
-onPrintListProject(type: boolean) {
+public onPrintListProject(type: boolean) {
   this.submittedPrint = true;
-
   const dto = new EtatImprimableModel(
               ID_ETAT_IMPRIMABLE,
               IS_EXPORT, 

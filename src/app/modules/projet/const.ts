@@ -12,3 +12,6 @@ export class Columns {
 
 export const ID_ETAT_IMPRIMABLE = 1;
 export const IS_EXPORT = false;
+export const SORT_COLOMN = 'id';
+export const ASC = 'ASC';
+export const EMPTY_STRING = '';

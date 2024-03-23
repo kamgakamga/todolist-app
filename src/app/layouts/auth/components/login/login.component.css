@@ -1,0 +1,28 @@
+.login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color:rgb(154, 151, 151);
+        /* background: url('your-background-image.jpg') center center no-repeat; */
+        background-size: cover;
+      }
+      
+      .login-box {
+        background-color: #fff;
+        padding: 1rem;
+        text-align: left;
+      }
+      
+      .password-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      
+      .center-label {
+        text-align: center !important;
+      }
+      

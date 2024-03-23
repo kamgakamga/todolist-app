@@ -1,1 +1,31 @@
-<p>login works!</p>
+<div class="login-container">
+        <div class="center-label p-card">
+          <h1>{{ 'LOGIN' | translate }}</h1>
+      
+          <form >
+          <!-- <form [formGroup]="loginForm"> -->
+            <div class="p-fluid login-box">
+              <div class="p-field">
+                <label  class="left-label" for="username">{{ 'USERNAME' | translate }}</label>
+                <input id="username" type="text" formControlName="username" pInputText required>
+              </div>
+      
+              <div class="p-field">
+                <label for="password">{{ 'PASSWORD' | translate }}</label>
+                <p-password id="password" formControlName="password" [toggleMask]="showPassword"></p-password>
+              </div>
+      
+              <div class="p-field">
+                <input type="checkbox" id="remember" formControlName="remember">
+                <label for="remember">{{ 'REMEMBER_ME' | translate }}</label>
+              </div>
+      
+              <button type="button" pButton label="" class="p-button-primary p-mb-1" (click)="onSubmit()">{{ 'CONNEXION' | translate }}</button>
+              <button type="button" pButton label="" class="p-button-secondary" (click)="reset()">{{ 'RESET' | translate }}</button>
+      
+              <a href="#" class="forgot-password">{{ 'FORGOT_PASSWORD' | translate }}</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      

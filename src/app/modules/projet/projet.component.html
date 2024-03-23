@@ -11,7 +11,7 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt  [rows]="5" 
+    <p-table #dt  [rows]="20" 
                   [paginator]="true"
                   class="p-table"
                   [scrollable]="true" 
@@ -65,7 +65,8 @@
                 </td>
                 <td class="d-flex">
                     <span class="btn-round btn btn-success mr-2" (click)="editProject(rowData)"><i class="pi pi-pencil"></i></span>
-                    <span class="btn-round btn btn-danger" (click)="deleteProject(rowData)"><i class="pi pi-trash"></i></span>
+                    <span class="btn-round btn btn-danger mr-2" (click)="deleteProject(rowData)"><i class="pi pi-trash"></i></span>
+                    <span class="btn-round btn btn-warning mr-2"><i class="pi pi-ellipsis-v"></i></span>
                 </td>
             </tr>
         </ng-template> 
@@ -78,48 +79,79 @@
 
     </p-table>
 
-<p-dialog [(visible)]="projectDialog" [style]="{width: '500px'}" header="Project Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="projectDialog" [style]="{width: '600px'}" header="Project Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <form [formGroup]="form">
+        <form [formGroup]="form" class="p-2">
             <div class="field row mb-2">
-                <label for="projectName" class="col-md-3">{{'INTITULE' | translate}}</label>
-                <input name="projectName" type="text" pInputText class="col-md-9 form-control" id="projectName" required autofocus formControlName="projectName"/>
-                <small class="p-error" *ngIf="submitted && !project">{{'ERROR_NOM_REQUIS' | translate}}</small>
+                <div class="col-md-3">
+                    <label for="projectName">{{'INTITULE' | translate}}</label><span class="red-color">*</span>
+                </div>
+                <div class="col-md-9">
+                    <input 
+                        name="projectName" 
+                        type="text"
+                        pInputText 
+                        class="form-control" 
+                        id="projectName"  
+                        autofocus 
+                        formControlName="projectName"
+                      />
+                    <small class="invalid-feedback" *ngIf="submitted && (f['projectName'].errors?.['required'])">{{'ERROR_REQUIS' | translate}}</small>
+                    <small class="invalid-feedback" *ngIf="(f['projectName'].touched || submitted) && (f['projectName'].errors?.['minlength'])">  {{"ERROR_4_CARACTERES" | translate}} </small>
+                    <small class="invalid-feedback" *ngIf="(f['projectName'].touched || submitted) && (f['projectName'].errors?.['maxlength'])">  {{"ERROR_30_CARACTERES" | translate}} </small>
+                </div>           
+            </div>
+            <div class="field row mb-3">
+                <div class="col-md-3">
+                    <label for="projectDescription">{{'DESCRIPTION' | translate}}</label>
+                </div>
+                <div class="col-md-9">
+                     <textarea id="projectDescription" name="projectDescription"  class="form-control" pInputTextarea formControlName="projectDescription" rows="2" cols="20"  [ngClass]="{'is-invalid': !f['projectDescription'].valid}"></textarea>
+                     <small class="p-error" *ngIf="(f['projectDescription'].touched || submitted) && (f['projectDescription'].errors?.['maxlength'])">{{"ERROR_150_CARACTERES" | translate}} </small>
+                </div>
             </div>
             <div class="field row mb-2">
-                <label for="projectDescription" class="col-md-3">{{'DESCRIPTION' | translate}}</label>
-                <textarea id="projectDescription" name="projectDescription"  class="col-md-9 form-control" pInputTextarea required formControlName="projectDescription" rows="2" cols="20"></textarea>
-            </div>
-            <div class="field row mb-2">
-                <label for="responsable" class="col-md-3">{{'RESPONSABLE' | translate}}</label>
+                <div class="col-md-3">
+                    <label for="responsable">{{'RESPONSABLE' | translate}}</label>
+                </div>
                 <div class="col-md-5">
-                <p-autoComplete
-                          [suggestions]="responsableProjet"
-                          (completeMethod)="filterData($event)"
-                          field="id" [dropdown]="true"
-                          formControlName="projectResponsable"
-                >
-                    <ng-template let-object pTemplate="item">
-                      <div >
-                        <div>{{object.prenom}} {{object.nom}}</div>
-                      </div>
-                    </ng-template>
-                </p-autoComplete>
-            </div>
-        </div>
-            <div class="field row mb-2">
-                <label for="startDate" class="col-md-3">{{'DATE_DEBUT' | translate}}</label>
-                <input type="date" pInputText id="startDate" class="col-md-9 form-control" formControlName="projectDateDebut"/>
-                <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateDebut'].errors" class="invalid-feedback">
-                    {{'DATE_DEBUT_INFERIEUR_DATE_FIN' | translate}}
-                </small>
+                    <p-autoComplete
+                            [suggestions]="responsableProjet"
+                            (completeMethod)="filterData($event)"
+                            field="id" [dropdown]="true"
+                            formControlName="projectResponsable"
+                            (onSelect)="onSelectResponsable($event)"
+                    >
+                        <ng-template let-responsable pTemplate="item">
+                            <span>{{responsable.prenom}} {{responsable.nom}}</span>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+                <div *ngIf="projetOnner" class="col-md-4">
+                    <span>{{projetOnner.prenom}} {{projetOnner.nom}}</span>
+                </div>
             </div>
             <div class="field row mb-2">
-                <label for="endDate" class="col-md-3">{{'DATE_FIN' | translate}}</label>
-                <input type="date" pInputText id="endDate" class="col-md-9 form-control" formControlName="projectDateFin"/>
-                <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateFin'].errors" class="invalid-feedback">
-                    {{'DATE_FIN_SUPERIEUR_DATE_DEBUT' | translate}} 
-                </small>                 
+                <div class="col-md-3">
+                      <label for="projectDateDebut">{{'DATE_DEBUT' | translate}}</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="date" pInputText id="projectDateDebut" class="form-control" formControlName="projectDateDebut"/>
+                    <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateDebut'].errors" class="invalid-feedback">
+                         {{'DATE_DEBUT_INFERIEUR_DATE_FIN' | translate}}
+                    </small>
+                </div>
+            </div>
+            <div class="field row mb-2">
+                <div class="col-md-3">
+                     <label for="projectDateFin">{{'DATE_FIN' | translate}}</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="date" pInputText id="projectDateFin" class="form-control" formControlName="projectDateFin"/>
+                    <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateFin'].hasError('dateInvalides')" class="invalid-feedback">
+                       {{'DATE_FIN_SUPERIEUR_DATE_DEBUT' | translate}} 
+                    </small>  
+                </div>               
             </div>
      </form>
     </ng-template>
@@ -130,4 +162,4 @@
     </ng-template>
 </p-dialog>
 
- <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+ <p-confirmDialog [style]="{width: '500px'}"></p-confirmDialog>

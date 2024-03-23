@@ -10,7 +10,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NavBarComponent } from './dashboard/components/nav-bar/nav-bar.component';
-import { LoginComponent } from './layouts/auth/components/login/login.component';
 import { RouterModule } from '@angular/router';
 import { AdminModule } from './layouts/admin/admin.module';
 import { TableModule } from 'primeng/table';
@@ -24,8 +23,7 @@ export function createTranslateLoader(httpClient:HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
-    LoginComponent
+    NavBarComponent
   ],
   exports: [TranslateModule],
   imports: [
