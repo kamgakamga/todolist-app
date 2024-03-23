@@ -10,6 +10,7 @@
 "PROJETS" : "Projet",
 "Delete" : "Suppression en cours",
 "RESPONSABLE": "Responsable",
+"ERROR_NOM_REQUIS": "Name is required.",
 "DATE_DEBUT": "Date début",
 "DATE_FIN": "Date fin",
 "ACTIONS": "Actions",
@@ -21,5 +22,12 @@
 "ADVANCE_IT": "Advance-It Group,",
 "GESTION_SPRINTS": "Gestion sprint",
 "GESTION_TACHES": "Gestion taches",
-"GESTION_UTILISATEURS": "Gestion utilisateur"
+"GESTION_UTILISATEURS": "Gestion utilisateur",
+"DATE_DEBUT_INFERIEUR_DATE_FIN": "La date de début doit être antérieure à la date de fin.",
+"DATE_FIN_SUPERIEUR_DATE_DEBUT": "La date de fin doit être postérieure à la date de début.",
+"INTITULE": "Intitule",
+"TOTAL_PROJET": "Nombre total de projet",
+"RECHERCHER": "Recherche",
+"ENREGISTRER": "Enregistrer",
+"ANNULER": "Annuler"
 }

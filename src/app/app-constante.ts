@@ -11,7 +11,12 @@ export class AppConstants {
   public static DEFAULT_PAGE = 0;
   public static TOTAL_PAGE_DEFAULT = 0;
   public static DEFAULT_DURATION_MODAL = 5000;
-
+  public static EXCEL_EXTENSION = '.xlsx';
+  public static OLD_EXCEL_EXTENSION = '.xls';
+  public  static PDF_EXTENSION = '.pdf';
+  public static EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  public static PDF_TYPE = 'application/pdf';
+  public static OTHER_TYPE = 'application/octet-stream';
   public static TYPE_DATE = 'date';
   public static TYPE_DATE_TIME = 'datetime';
   public static TYPE_NUMBER = 'number';
@@ -26,4 +31,6 @@ export class AppConstants {
 
   public static URL_PROJETS = 'projets';
   public static GET_LIST_UTILISATEURS = 'users';
+  public static URL_IMPRESSION = 'systeme/etat/imprimer';
+  static EXT_RTF: any;
 }

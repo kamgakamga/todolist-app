@@ -9,3 +9,6 @@ export class Columns {
           {field: 'dateFin', header: 'DATE_FIN', default: true, type: AppConstants.TYPE_DATE}
         ]
       }
+
+export const ID_ETAT_IMPRIMABLE = 1;
+export const IS_EXPORT = false;

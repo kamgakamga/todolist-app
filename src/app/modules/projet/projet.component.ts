@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';;
 import { ProjetService } from 'src/app/services/projet.service';
-import { Columns } from './const';
+import { Columns,ID_ETAT_IMPRIMABLE, IS_EXPORT } from './const';
 import { AppConstants } from 'src/app/app-constante';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -9,6 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenericsService } from 'src/app/services/generics.service';
 import { ProjetRequestDto } from 'src/app/models/dtos/requests/projet';
 import Swal from 'sweetalert2';
+import { type } from 'os';
+import { ParamEtat, EtatImprimableModel } from 'src/app/models/dtos/requests/etat.model';
 
 @Component({
   selector: 'app-projet',
@@ -16,9 +18,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./projet.component.scss']
 })
 export class ProjetComponent implements OnInit {
-deleteSelectedProjets() {
-throw new Error('Method not implemented.');
-}
+
   public form!: FormGroup;
   selectedData: any;
   projetsList !: any | undefined;
@@ -26,6 +26,7 @@ throw new Error('Method not implemented.');
   selectedProjets: any;
   responsableProjet: any;
   submitted: any;
+  submittedPrint = false;
   projectDialog: boolean = false;
   projetOnner: any;
   public selectedProject !: any;
@@ -44,6 +45,7 @@ throw new Error('Method not implemented.');
   ref: any;
 
   constructor(private projetService: ProjetService,
+              //private modalService: NgModal,
               public translateService: TranslateService,
               private messageService: MessageService,
               private confirmationService: ConfirmationService,
@@ -68,6 +70,10 @@ throw new Error('Method not implemented.');
     }
   
   }
+
+  deleteSelectedProjets() {
+    throw new Error('Method not implemented.');
+    }
 
   private formatsDate(date: Date): string {
     const year = date.getFullYear();
@@ -244,4 +250,16 @@ this._getAllUtilisateurs(event.query)
   
   }
     
+onPrintListProject(type: boolean) {
+  this.submittedPrint = true;
+
+  const dto = new EtatImprimableModel(
+              ID_ETAT_IMPRIMABLE,
+              IS_EXPORT, 
+              []
+              );
+  this.genericsService.reportPostResource(`${AppConstants.URL_IMPRESSION}`, dto).then((result: any) => {
+    this.genericsService.getByteArrayAndSaveReportPDF(result, `Report_File_`, 0);
+  });
+}
 }

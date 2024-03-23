@@ -1,20 +1,23 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, SecurityContext } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ConfirmationService, Message } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AppConstants } from '../app-constante';
+import * as FileSaver from 'file-saver';
 import Swal, { SweetAlertIcon, SweetAlertPosition } from 'sweetalert2';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class GenericsService {
   public urlImage = AppConstants.API_BASE_URL + 'core/telechager/piece-jointe/';
-  public filedata = undefined;
+  public filedata: any ;
   msgs: Message[] = [];
+
   constructor(
     private _http: HttpClient,
     private _location: Location,
@@ -111,7 +114,7 @@ export class GenericsService {
     return Promise.reject(errMsg);
   }
 
-  private extractData(res: HttpResponse<any>) {
+  private extractData(res: HttpResponse<any> | undefined) {
     let body;
     if (res) {
       body = res.body;
@@ -120,78 +123,120 @@ export class GenericsService {
   }
 
 
-  // public getByteArrayAndSaveReport(value: any, filename: string, extension: string, isExport?: boolean) {
-  //   let file
-  //   // la ligne suivante telecharge et enregistre directement en pdf dans le repertoire telechargement
-  //   if (isExport || extension.toLowerCase() === 'pdf') {
-  //     file = new Blob([value], { type: 'application/pdf' });
-  //     // @ts-ignore
-  //     const isFirefox = typeof InstallTrigger !== 'undefined';
-  //     if (isFirefox) {
-  //       FileSaver.saveAs(file, filename);
-  //     } else {
-  //       const blobUrl = URL.createObjectURL(file);
-  //       const iframe = document.createElement('iframe');
-  //       iframe.style.display = 'none';
-  //       // Sans DOMSanitizer cela peut bien marcher mais le navigateur ne reconnait pas ce binaire comme une ressource sûre.
-  //       // iframe.src = blobUrl;
-  //       // DOMSanitizer permet d'en faire une ressource sûre.
-  //       iframe.src = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl));
-  //       document.body.appendChild(iframe);
-  //       iframe.contentWindow.print();
-  //     }
-  //   } else if (extension.toLowerCase() === 'png' || extension.toLowerCase() === 'jpg' || extension.toLowerCase() === 'jpeg') {
-  //     file = new Blob([value], { type: 'application/octet-stream' });
-  //     const objectURL = URL.createObjectURL(file);
-  //     this.filedata = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  //     // this.dialogDisplay = this.dialog.open(ImageDetailComponent, {
-  //     //   disableClose: true,
-  //     //   data: {
-  //     //     image: this.filedata,
-  //     //     title: filename
-  //     //   }
-  //     // });
+  public getByteArrayAndSaveReport(value: any, filename: string, extension: string, isExport?: boolean) {
+    let file
+    // la ligne suivante telecharge et enregistre directement en pdf dans le repertoire telechargement
+    if (isExport || extension.toLowerCase() === 'pdf') {
+      file = new Blob([value], { type: 'application/pdf' });
+      // @ts-ignore
+      const isFirefox = typeof InstallTrigger !== 'undefined';
+      if (isFirefox) {
+        FileSaver.saveAs(file, filename);
+      } else {
+        const blobUrl = URL.createObjectURL(file);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        // Sans DOMSanitizer cela peut bien marcher mais le navigateur ne reconnait pas ce binaire comme une ressource sûre.
+        iframe.src = blobUrl;
+        // DOMSanitizer permet d'en faire une ressource sûre.
+        const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
+        if (safeUrl !== null &&  iframe.contentWindow !== null) {
+          iframe.src = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, safeUrl)!;
+          document.body.appendChild(iframe);
+          iframe.contentWindow.print()!;
+        }
+      }
+    } else if (extension.toLowerCase() === 'png' || extension.toLowerCase() === 'jpg' || extension.toLowerCase() === 'jpeg') {
+      file = new Blob([value], { type: 'application/octet-stream' });
+      const objectURL = URL.createObjectURL(file);
+      this.filedata = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      // this.dialogDisplay = this.dialog.open(ImageDetailComponent, {
+      //   disableClose: true,
+      //   data: {
+      //     image: this.filedata,
+      //     title: filename
+      //   }
+      // });
 
-  //     // this.dialogDisplay.afterClosed().subscribe((result: DialogImage) => {
-  //     //   this.dialogDisplay = null;
-  //     //   if (result) {
-  //     //     FileSaver.saveAs(file, filename);
-  //     //   }
-  //     // });
-  //   } else {
-  //     file = new Blob([value], { type: 'application/octet-stream' });
-  //     FileSaver.saveAs(file, filename);
-  //   }
+      // this.dialogDisplay.afterClosed().subscribe((result: DialogImage) => {
+      //   this.dialogDisplay = null;
+      //   if (result) {
+      //     FileSaver.saveAs(file, filename);
+      //   }
+      // });
+    } else {
+      file = new Blob([value], { type: 'application/octet-stream' });
+      FileSaver.saveAs(file, filename);
+    }
+  }
+
+  // public reportPostPostResource(url: string, filter: any) {
+  //   return this._http.post(`${AppConstants.API_BASE_URL + url}`,  filter, {
+  //     observe: 'response',
+  //     responseType: 'arraybuffer' as 'json'
+  //   }).toPromise()
+  //     .then(this.extractData)
+  //     .catch(this.handleError);
   // }
 
-  // public getByteArrayAndSaveReportPDF(value: any, filename: string, isExport?: number) {
-  //   console.log(isExport);
-  //   // la ligne suivante telecharge et enregistre directement en pdf dans le repertoire telechargement
-  //   if (isExport && isExport === 2) {
-  //     const file = new Blob([value], { type: (isExport && isExport === 2) ? 'application/xls' : PDF_TYPE });
-  //     FileSaver.saveAs(file, filename + new Date().getTime() + OLD_EXCEL_EXTENSION);
-  //   } else if (isExport && isExport === 3) {
-  //     const file = new Blob([value], { type: 'application/octet-stream' });
-  //     FileSaver.saveAs(file, filename + new Date().getTime() + EXT_RTF);
-  //   } else {
-  //     const file = new Blob([value], { type: PDF_TYPE });
-  //     // @ts-ignore
-  //     const isFirefox = typeof InstallTrigger !== 'undefined';
-  //     if (isFirefox) {
-  //       FileSaver.saveAs(file, filename + new Date().getTime() + PDF_EXTENSION);
-  //     } else {
-  //       const blobUrl = URL.createObjectURL(file);
-  //       const iframe = document.createElement('iframe');
-  //       iframe.style.display = 'none';
-  //       // Sans DOMSanitizer cela peut bien marcher mais le navigateur ne reconnait pas ce binaire comme une ressource sûre.
-  //       // iframe.src = blobUrl;
-  //       // DOMSanitizer permet d'en faire une ressource sûre.
-  //       iframe.src = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl));
-  //       document.body.appendChild(iframe);
-  //       iframe.contentWindow.print();
-  //     }
-  //   }
-  // }
+  public reportPostResource(url: string, data: any) {
+    return this._http.post(`${AppConstants.API_BASE_URL + url}`, data, {
+      observe: 'response',
+      responseType: 'arraybuffer' as 'json'
+    }).toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  public getByteArrayAndSaveReportPDF(value: any, filename: string, isExport?: number) {
+    console.log(isExport);
+    // la ligne suivante telecharge et enregistre directement en pdf dans le repertoire telechargement
+    if (isExport && isExport === 2) {
+      const file = new Blob([value], { type: (isExport && isExport === 2) ? 'application/xls' :`${AppConstants.PDF_TYPE}` });
+      FileSaver.saveAs(file, filename + new Date().getTime() + `${AppConstants.OLD_EXCEL_EXTENSION}`);
+    } else if (isExport && isExport === 3) {
+      const file = new Blob([value], { type: 'application/octet-stream' });
+      FileSaver.saveAs(file, filename + new Date().getTime() +`${AppConstants.EXT_RTF}` );
+    } else {
+      const file = new Blob([value], { type: `${AppConstants.PDF_TYPE}` });
+      // @ts-ignore
+      const isFirefox = typeof InstallTrigger !== 'undefined';
+      if (isFirefox) {
+        FileSaver.saveAs(file, filename + new Date().getTime() + `${AppConstants.PDF_EXTENSION}`);
+      } else {
+        console.log('impression encours1111 ...');
+        const blobUrl = URL.createObjectURL(file);
+        const iframe = document.createElement('iframe');
+        iframe.src = blobUrl;
+        iframe.style.display = 'none';
+        iframe.onload = () => {
+            console.log('iframe chargé');
+            // Maintenant que l'iframe est chargé, vous pouvez accéder à sa propriété contentWindow en toute sécurité.
+            if (iframe.contentWindow) {
+                console.log('iframe.contentWindow', iframe.contentWindow);
+                console.log('Dédut impression ...');
+                iframe.contentWindow.print();
+                console.log('Fin impression.');
+            } else {
+                console.error("iframe.contentWindow est null");
+            }
+  
+        // const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);
+        // console.error("safeUrl", safeUrl);
+        // console.error("iframe.contentWindow", iframe.contentWindow);
+        // if (safeUrl !== null &&  iframe.contentWindow !== null) {
+        //   console.log('Dédut impression ...');
+        //   iframe.src = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, safeUrl)!;
+        //   iframe.contentWindow.print()!;
+        //   console.log('Fin impression.');
+        //  }
+        };
+        // Attachez l'iframe au DOM après avoir configuré son chargement.
+      document.body.appendChild(iframe);        
+      }
+    }
+  }
 
   public downloadFile(url: any): Observable<any> {
     return this._http.get(`${AppConstants.API_BASE_URL + url}`, { responseType: 'blob' });
@@ -201,16 +246,17 @@ export class GenericsService {
     return val.split('_').join(' ');
   }
 
-  // public traiterDisplayName(displayName: string) {
-  //   if (displayName) {
-  //     const idx = displayName.indexOf(' ');
-  //     if (idx > 0) {
-  //       return displayName.slice(0, idx + 2);
-  //     } else {
-  //       return displayName;
-  //     }
-  //   }
-  // }
+  public buildDisplayName(displayName: string) {
+    if (displayName) {
+      const idx = displayName.indexOf('  ');
+      if (idx > 0) {
+        return displayName.slice(0, idx + 2);
+      } else {
+        return displayName;
+      }
+    }
+    return displayName;
+  }
 
   public getProfileImage(id: number) {
     return this.urlImage + id;
@@ -298,4 +344,5 @@ export class GenericsService {
     });
   }
   
+
 }

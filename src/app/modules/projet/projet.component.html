@@ -7,7 +7,7 @@
 
         <ng-template pTemplate="right">
             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="{{'IMPORT'|translate}}" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="{{'EXPORT'|translate}}" icon="pi pi-upload" class="p-button-help"></button>
+            <button pButton pRipple label="{{'EXPORT'|translate}}" icon="pi pi-upload" class="p-button-help" (click)="onPrintListProject(false)"></button>
         </ng-template>
     </p-toolbar>
 
@@ -30,7 +30,7 @@
                 <h5 class="m-0">{{'GESTION_PROJETS' | translate}}</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="onSearchProject($event)" placeholder="Search..." />
+                    <input pInputText type="text" (input)="onSearchProject($event)" placeholder="{{'RECHERCHER' | translate }}..." />
                 </span>
             </div>
         </ng-template>
@@ -72,7 +72,7 @@
 
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                In total there are {{projetsList ? projetsList.length : 0 }} Projet{{projetsList && projetsList.length > 1 ? "s." : "." }}<!-- <span *ngIf="projets && projets.length > 1">s</span>. -->
+              {{'TOTAL_PROJET'}} {{projetsList ? projetsList.length : 0 }} {{ 'PROJETS' | translate}}{{projetsList && projetsList.length > 1 ? "s." : "." }}<!-- <span *ngIf="projets && projets.length > 1">s</span>. -->
             </div>
         </ng-template>
 
@@ -82,16 +82,16 @@
     <ng-template pTemplate="content">
         <form [formGroup]="form">
             <div class="field row mb-2">
-                <label for="projectName" class="col-md-3">Intitule</label>
+                <label for="projectName" class="col-md-3">{{'INTITULE' | translate}}</label>
                 <input name="projectName" type="text" pInputText class="col-md-9 form-control" id="projectName" required autofocus formControlName="projectName"/>
-                <small class="p-error" *ngIf="submitted && !project">Name is required.</small>
+                <small class="p-error" *ngIf="submitted && !project">{{'ERROR_NOM_REQUIS' | translate}}</small>
             </div>
             <div class="field row mb-2">
-                <label for="projectDescription" class="col-md-3">Description</label>
+                <label for="projectDescription" class="col-md-3">{{'DESCRIPTION' | translate}}</label>
                 <textarea id="projectDescription" name="projectDescription"  class="col-md-9 form-control" pInputTextarea required formControlName="projectDescription" rows="2" cols="20"></textarea>
             </div>
             <div class="field row mb-2">
-                <label for="responsable" class="col-md-3">Responsable</label>
+                <label for="responsable" class="col-md-3">{{'RESPONSABLE' | translate}}</label>
                 <div class="col-md-5">
                 <p-autoComplete
                           [suggestions]="responsableProjet"
@@ -108,25 +108,25 @@
             </div>
         </div>
             <div class="field row mb-2">
-                <label for="startDate" class="col-md-3">Date debut</label>
+                <label for="startDate" class="col-md-3">{{'DATE_DEBUT' | translate}}</label>
                 <input type="date" pInputText id="startDate" class="col-md-9 form-control" formControlName="projectDateDebut"/>
                 <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateDebut'].errors" class="invalid-feedback">
-                    La date de début doit être antérieure à la date de fin.
+                    {{'DATE_DEBUT_INFERIEUR_DATE_FIN' | translate}}
                 </small>
             </div>
             <div class="field row mb-2">
-                <label for="endDate" class="col-md-3"> Date fin</label>
+                <label for="endDate" class="col-md-3">{{'DATE_FIN' | translate}}</label>
                 <input type="date" pInputText id="endDate" class="col-md-9 form-control" formControlName="projectDateFin"/>
                 <small *ngIf="(f['projectDateFin'].touched || submitted) && f['projectDateFin'].errors" class="invalid-feedback">
-                    La date de fin doit être postérieure à la date de début.
+                    {{'DATE_FIN_SUPERIEUR_DATE_DEBUT' | translate}} 
                 </small>                 
             </div>
      </form>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onSave()"></button>
+        <button pButton pRipple label="{{'ANNULER' | translate}}" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="{{'ENREGISTRER' | translate}}" icon="pi pi-check" class="p-button-text" (click)="onSave()"></button>
     </ng-template>
 </p-dialog>
 
