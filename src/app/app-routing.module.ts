@@ -3,11 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'projets',
-    pathMatch: 'full'
-  },
 {
   path: 'auth',
   canActivate: [],
@@ -20,12 +15,6 @@ const routes: Routes = [
   loadChildren: () =>
     import('./layouts/admin/admin.module').then((m) => m.AdminModule).catch((error) => {}),
 },
-{
-  path: '',
-  redirectTo: 'auth',
-  pathMatch: 'full',
-},
-
 {
   path: '**',
   redirectTo: 'auth',

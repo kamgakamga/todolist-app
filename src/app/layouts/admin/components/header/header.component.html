@@ -1,22 +1,11 @@
-<div class="app-header">
-        <div class="title-icons-container p-m-1">
-          <div class="app-title">
-            <a routerLink="/" href="" class="decoration">
-              <i class="pi pi-user p-primary-color p-ml-2 p-mr-2"></i> Aurore kanban
-            </a>
-          </div>
-          <div class="window-icons">
-      
-            <i class="pi pi-minus p-mr-5" (click)="minimizeWindow()"></i>
-            <i class="pi pi-external-link p-mr-5" (click)="hideWindow()"></i>
-            <i class="pi pi-times p-mr-3" (click)="closeWindow()"></i>
-          </div>
-        </div>
+<div class="menu-bar row">
+  <div class="app-logo col-md-2 text-center pt-3">
+      <h4><strong >Aurore kamban</strong></h4>
+  </div>
+   <div class="col-md-10">
+      <p-menubar [model]="menuItems">
+        <div class="p-mr-4"></div>
+      </p-menubar>
+  </div>
 </div>
-      
-      <div class="menu-bar">
-        <p-menubar [model]="menuItems">
-          <!-- <app-user-info></app-user-info> -->
-          <div class="p-mr-4"></div>
-        </p-menubar>
-      </div>
+

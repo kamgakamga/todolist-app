@@ -13,9 +13,7 @@ import { ToastModule  } from 'primeng/toast';
 import { ConfirmDialogModule  } from 'primeng/confirmdialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { createTranslateLoader } from 'src/app/app.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [ProjetComponent],
@@ -29,20 +27,14 @@ import { createTranslateLoader } from 'src/app/app.module';
     ProjetRoutingModule,
     ReactiveFormsModule,
     TableModule,
-    TranslateModule.forRoot({
-      loader:{
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps:[HttpClient]
-      }
-    }),
     RadioButtonModule,
     DropdownModule,
     InputNumberModule,
     FileUploadModule,
     ToolbarModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    SharedModule
   ]
 })
 export class ProjetModule { }

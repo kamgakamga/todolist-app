@@ -11,99 +11,99 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
         roles: [],
         permissions: []
       },
-      items: [
-        {
-          routerLink: 'new',
-          icon: 'pi pi-fw pi-plus',
-          label: translate.instant('New'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-          items: [
+      // items: [
+      //   {
+      //     routerLink: 'new',
+      //     icon: 'pi pi-fw pi-plus',
+      //     label: translate.instant('New'),
+      //     routerLinkActiveOptions: { exact: true },
+      //     state: {
+      //       roles: [],
+      //       permissions: []
+      //     },
+      //     items: [
 
-            {
-              routerLink: 'Bookmark',
-              icon: 'pi pi-fw pi-bookmark',
-              label: translate.instant('Bookmark'),
-              routerLinkActiveOptions: { exact: true },
-              state: {
-                roles: [],
-                permissions: []
-              },
-              items: [
+      //       {
+      //         routerLink: 'Bookmark',
+      //         icon: 'pi pi-fw pi-bookmark',
+      //         label: translate.instant('Bookmark'),
+      //         routerLinkActiveOptions: { exact: true },
+      //         state: {
+      //           roles: [],
+      //           permissions: []
+      //         },
+      //         items: [
 
-                {
-                  routerLink: 'Bookmark',
-                  icon: 'pi pi-fw pi-bookmark',
-                  label: translate.instant('Bookmark'),
-                  routerLinkActiveOptions: { exact: true },
-                  state: {
-                    roles: [],
-                    permissions: []
-                  },
-                },
-                {
-                  routerLink: 'Video',
-                  icon: 'pi pi-fw pi-video',
-                  label: translate.instant('Video'),
-                  routerLinkActiveOptions: { exact: true },
-                  state: {
-                    roles: [],
-                    permissions: []
-                  },
-                },
+      //           {
+      //             routerLink: 'Bookmark',
+      //             icon: 'pi pi-fw pi-bookmark',
+      //             label: translate.instant('Bookmark'),
+      //             routerLinkActiveOptions: { exact: true },
+      //             state: {
+      //               roles: [],
+      //               permissions: []
+      //             },
+      //           },
+      //           {
+      //             routerLink: 'Video',
+      //             icon: 'pi pi-fw pi-video',
+      //             label: translate.instant('Video'),
+      //             routerLinkActiveOptions: { exact: true },
+      //             state: {
+      //               roles: [],
+      //               permissions: []
+      //             },
+      //           },
 
-              ]
-            },
-            {
-              routerLink: 'Video',
-              icon: 'pi pi-fw pi-video',
-              label: translate.instant('Video'),
-              routerLinkActiveOptions: { exact: true },
-              state: {
-                roles: [],
-                permissions: []
-              },
-            },
+      //         ]
+      //       },
+      //       {
+      //         routerLink: 'Video',
+      //         icon: 'pi pi-fw pi-video',
+      //         label: translate.instant('Video'),
+      //         routerLinkActiveOptions: { exact: true },
+      //         state: {
+      //           roles: [],
+      //           permissions: []
+      //         },
+      //       },
 
-          ]
-        },
-        {
-          routerLink: 'Delete',
-          icon: 'pi pi-fw pi-trash',
-          label: translate.instant('Delete'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          }
-        },
-        {
-          routerLink: 'Delete1',
-          icon: 'pi pi-fw pi-trash',
-          label: translate.instant('Delete1'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          }
-        },
-        {
-          separator: true
-        },
-        {
-          routerLink: 'Export',
-          icon: 'pi pi-fw pi-external-link',
-          label: translate.instant('Export'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          }
-        }
-      ]
+      //     ]
+      //   },
+      //   {
+      //     routerLink: 'Delete',
+      //     icon: 'pi pi-fw pi-trash',
+      //     label: translate.instant('Delete'),
+      //     routerLinkActiveOptions: { exact: true },
+      //     state: {
+      //       roles: [],
+      //       permissions: []
+      //     }
+      //   },
+      //   {
+      //     routerLink: 'Delete1',
+      //     icon: 'pi pi-fw pi-trash',
+      //     label: translate.instant('Delete1'),
+      //     routerLinkActiveOptions: { exact: true },
+      //     state: {
+      //       roles: [],
+      //       permissions: []
+      //     }
+      //   },
+      //   {
+      //     separator: true
+      //   },
+      //   {
+      //     routerLink: 'Export',
+      //     icon: 'pi pi-fw pi-external-link',
+      //     label: translate.instant('Export'),
+      //     routerLinkActiveOptions: { exact: true },
+      //     state: {
+      //       roles: [],
+      //       permissions: []
+      //     }
+      //   }
+      // ]
     },
     {
       label: translate.instant('PROJET'),
@@ -115,33 +115,19 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
       },
       items: [
         {
-          routerLink: 'Edit',
+          routerLink: 'projets',
           icon: 'pi pi-fw pi-file',
-          label: translate.instant('Edit'),
+          label: translate.instant('Projets'),
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
             permissions: []
-          },
-          items: [
-
-            {
-              routerLink: 'Bookmark',
-              icon: 'pi pi-fw pi-bookmark',
-              label: translate.instant('Bookmark'),
-              routerLinkActiveOptions: { exact: true },
-              state: {
-                roles: [],
-                permissions: []
-              },
-            },
-
-          ]
+          }
         }
       ]
     },
     {
-      label: translate.instant('LISTES'),
+      label: translate.instant('PARAMETRAGES'),
       // icon: 'pi pi-fw pi-file',
       routerLinkActiveOptions: { exact: true },
       state: {
@@ -150,9 +136,9 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
       },
       items: [
         {
-          routerLink: 'fiche-personnel',
+          routerLink: '/projets',
           icon: 'pi pi-fw pi-user',
-          label: translate.instant('FICHE_PERSONNEL'),
+          label: translate.instant('PROJETS'),
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
@@ -163,68 +149,15 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
           separator: true
         },
         {
-          routerLink: 'constantes',
+          routerLink: 'sprints',
           icon: 'pi pi-fw pi-list',
-          label: translate.instant('CONSTANTES'),
+          label: translate.instant('SPRINTS'),
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
             permissions: []
           },
         },
-        {
-          routerLink: 'rubriques',
-          icon: 'pi pi-fw pi-list',
-          label: translate.instant('RUBRIQUES'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-        },
-        {
-          separator: true
-        },
-        {
-          routerLink: 'gestion-des-tables',
-          icon: 'pi pi-fw pi-table',
-          label: translate.instant('GESTION_DES_TABLES'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-        },
-        {
-          routerLink: 'organigramme',
-          icon: 'pi pi-fw pi-filter',
-          label: translate.instant('ORGANIGRAMMES'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-        },
-        {
-          routerLink: 'etablissement-liste',
-          icon: 'pi pi-fw pi-table',
-          label: translate.instant('ETABLISSEMENT'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-        },
-        {
-          routerLink: 'convention-collective',
-          icon: 'pi pi-fw pi-table',
-          label: translate.instant('CONVENTION_COLLECTIVE'),
-          routerLinkActiveOptions: { exact: true },
-          state: {
-            roles: [],
-            permissions: []
-          },
-        }
       ]
     }
   ];

@@ -60,6 +60,9 @@ throw new Error('Method not implemented.');
     ) { }
 
   ngOnInit(): void {
+
+    console.log('composant projet appeller.');
+    
     this._getListProjets(SORT_COLOMN, ASC,EMPTY_STRING);
     if(this.project){
       this._initForm(this.project)
@@ -124,12 +127,12 @@ this._getAllUtilisateurs(event.query)
 
   deleteProject(project: any) {
     Swal.fire({
-      title: 'CONFIRMATION',
-      text: `'CONFIRM_DELETE' ${project.nomProjet} ?`,
+      title: `${this.translateService.instant('CONFIRMATION')}`,
+      text: `${this.translateService.instant('CONFIRM_DELETE')} ${project.nomProjet} ?` ,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'SUPPRIMER',
-      cancelButtonText: 'ANNULER'
+      confirmButtonText: `${this.translateService.instant('SUPPRIMER')}`,
+      cancelButtonText: `${this.translateService.instant('ANNULER')}`
     }).then((result) => {
       if (result.isConfirmed) {
         this.genericsService.deletePromiseResource(`${AppConstants.URL_PROJETS}/${project.id}`)
@@ -138,7 +141,7 @@ this._getAllUtilisateurs(event.query)
               this.genericsService.confirmResponseAPI(res.data, 'success', +`${AppConstants.DEFAULT_DURATION_MODAL}`,'top-end');
               this._getListProjets(SORT_COLOMN, ASC, EMPTY_STRING);   
              } else {
-               Swal.fire('ERROR', 'UNE_ERREUR_EST_SURVENU', 'error');
+               Swal.fire('ERROR', `${this.translateService.instant('UNE_ERREUR_EST_SURVENU')}`, 'error');
              }
           })
           .catch((error) => {

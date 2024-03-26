@@ -11,6 +11,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PanelMenuModule } from 'primeng/panelmenu';
 
 
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -23,7 +24,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     MenubarModule,
     CommonModule,
     AdminRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   exports:[
     HeaderComponent,

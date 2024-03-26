@@ -73,7 +73,7 @@
 
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-              {{'TOTAL_PROJET'}} {{projetsList ? projetsList.length : 0 }} {{ 'PROJETS' | translate}}{{projetsList && projetsList.length > 1 ? "s." : "." }}<!-- <span *ngIf="projets && projets.length > 1">s</span>. -->
+              {{'TOTAL_PROJET' | translate}} {{projetsList ? projetsList.length : 0 }} {{ 'PROJETS' | translate}}{{projetsList && projetsList.length > 1 ? "s." : "." }}<!-- <span *ngIf="projets && projets.length > 1">s</span>. -->
             </div>
         </ng-template>
 

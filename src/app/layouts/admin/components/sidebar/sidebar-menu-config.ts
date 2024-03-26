@@ -1,14 +1,14 @@
 import {MenuItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 
-export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
+export const I18NMENUS = (translate: any): MenuItem[] => {
   return [
     {
       id: '1',
       label: translate.instant('PARAMETRAGES'),
-      routerLink: ['/sidebar-menu'],
+      routerLink: ['/projets'],
       routerLinkActiveOptions: { exact: true },
-      queryParams: { type: 'parametrages' },
+      // queryParams: { type: 'parametrages' },
       state: {
         roles: [],
         permissions: []
@@ -18,7 +18,7 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
           id: '1',
           // icon: 'pi pi-list',
           label: translate.instant('PROJETS'),
-          routerLink: ['/sidebar-menu'],
+          routerLink: ['/projets'],
           queryParams: { type: 'projets' },
           routerLinkActiveOptions: { exact: true },
           state: {
@@ -31,7 +31,7 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
           // icon: 'pi pi-list',
           label: translate.instant('SPRINTS'),
           queryParams: { type: 'sprints' },
-          routerLink: ['/sidebar-menu'],
+          routerLink: ['/sprints'],
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
@@ -43,7 +43,7 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
           // icon: 'pi pi-fw pi-list',
           label: translate.instant('TACHES'),
           queryParams: { type: 'taches' },
-          routerLink: ['/sidebar-menu'],
+          routerLink: ['/parametrages'],
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
@@ -55,7 +55,7 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
           // icon: 'pi pi-fw pi-list',
           label: translate.instant('UTILISATEURS'),
           queryParams: { type: 'utilisateurs' },
-          routerLink: ['/sidebar-menu'],
+          routerLink: ['/parametrages'],
           routerLinkActiveOptions: { exact: true },
           state: {
             roles: [],
@@ -100,7 +100,7 @@ export const I18NMENUS = (translate: TranslateService): MenuItem[] => {
     {
       id: '5',
       label: translate.instant('GESTION_UTILISATEURS'),
-      routerLink: ['/sidebar-menu'],
+      routerLink: ['/projets'],
       routerLinkActiveOptions: { exact: true },
       queryParams: { type: 'gestion-utilisateurs' },
       state: {
